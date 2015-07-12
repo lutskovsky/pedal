@@ -20,7 +20,7 @@ counter=Label(root,text='Pedal was pressed 0 times')
 counter.pack()
 
 def start_count():
-    GPIO.remove_event_detect()
+    GPIO.remove_event_detect(pedal_pin)
     count = 0
     counter.text = 'Pedal was pressed {} times'.format(count)
     def add_count():
@@ -29,7 +29,7 @@ def start_count():
     GPIO.add_event_detect(pedal_pin, GPIO.RISING, callback=add_count, bouncetime=200)
 
 def stop_count():
-    GPIO.remove_event_detect()
+    GPIO.remove_event_detect(pedal_pin)
 
 start_button=Button(root,text='Start', command=start_count())
 stop_button=Button(root,text='Stop', command=stop_count())
