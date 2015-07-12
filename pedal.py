@@ -14,27 +14,36 @@ pedal_pin = 23
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(pedal_pin,GPIO.IN)
 
-root=Tk()
+root = Tk()
 
-counter=Label(root,text='Pedal was pressed 0 times')
+count = 0
+counter_label = StringVar()
+counter = Label(root, textvariable=counter_label)
 counter.pack()
 
+def add_count():
+    global count
+    count += 1
+    counter_label.set('Pedal was pressed {} times'.format(count))
+
 def start_count():
-    print ("inside start_count")
-    GPIO.remove_event_detect(pedal_pin)
+    try:
+        GPIO.remove_event_detect(pedal_pin)
+    except Exception:
+        pass
+    global count
     count = 0
-    counter.text = 'Pedal was pressed {} times'.format(count)
-    def add_count():
-        print ("inside add_count")
-        count =+ 1
-        counter.text = 'Pedal was pressed {} times'.format(count)
+    counter_label.set('Pedal was pressed {} times'.format(count))
     GPIO.add_event_detect(pedal_pin, GPIO.RISING, callback=add_count, bouncetime=200)
 
 def stop_count():
-    GPIO.remove_event_detect(pedal_pin)
+    try:
+        GPIO.remove_event_detect(pedal_pin)
+    except Exception:
+        pass
 
-start_button=Button(root,text='Start', command=start_count())
-stop_button=Button(root,text='Stop', command=stop_count())
+start_button=Button(root,text='Start', command=start_count)
+stop_button=Button(root,text='Stop', command=stop_count)
 start_button.pack()
 stop_button.pack()
 
