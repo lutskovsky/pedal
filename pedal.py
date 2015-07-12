@@ -5,7 +5,7 @@ if(sys.version_info[0]<3):
 else:
     from tkinter import *
 
-import RPi.GPIO
+import RPi.GPIO as GPIO
 
 GPIO.add_event_detect(channel, GPIO.RISING, callback=my_callback, bouncetime=200)
 
