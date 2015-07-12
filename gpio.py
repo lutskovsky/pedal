@@ -283,7 +283,6 @@ class App(Frame):
         
 
 def main():
-    print("wer")
     root = Tk()
     root.title("Raspberry Pi GPIO")
     a = App(root)
