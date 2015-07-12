@@ -20,10 +20,12 @@ counter=Label(root,text='Pedal was pressed 0 times')
 counter.pack()
 
 def start_count():
+    print ("inside start_count")
     GPIO.remove_event_detect(pedal_pin)
     count = 0
     counter.text = 'Pedal was pressed {} times'.format(count)
     def add_count():
+        print ("inside add_count")
         count =+ 1
         counter.text = 'Pedal was pressed {} times'.format(count)
     GPIO.add_event_detect(pedal_pin, GPIO.RISING, callback=add_count, bouncetime=200)
