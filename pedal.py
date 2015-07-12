@@ -7,7 +7,7 @@ else:
 
 import RPi.GPIO as GPIO
 
-GPIO.add_event_detect(channel, GPIO.RISING, callback=my_callback, bouncetime=200)
+#GPIO.add_event_detect(channel, GPIO.RISING, callback=my_callback, bouncetime=200)
 
 
 root=Tk()
