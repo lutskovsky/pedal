@@ -9,14 +9,14 @@ else:
 
 import RPi.GPIO as GPIO
 
-pedal_pin = 23
+pedal = 23
 red = 24
 green = 25
 
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(pedal_pin,GPIO.IN)
-GPIO.setup(24,GPIO.OUT)
-GPIO.setup(25,GPIO.OUT)
+GPIO.setup(pedal,GPIO.IN)
+GPIO.setup(red,GPIO.OUT)
+GPIO.setup(green,GPIO.OUT)
 
 
 GPIO.output(red, True)
@@ -24,31 +24,37 @@ GPIO.output(green, False)
 
 root = Tk()
 
-count = 0
+
 counter_label = StringVar()
 counter = Label(root, textvariable=counter_label)
 counter.pack()
 
-def add_count():
+def set_counter(count):
+    counter_label.set('Pedal was pressed {} times'.format(count))
+
+count = 0
+set_counter(count)
+
+def add_count(channel):
     global count
     count += 1
-    counter_label.set('Pedal was pressed {} times'.format(count))
+    set_counter(count)
 
 def start_count():
     try:
-        GPIO.remove_event_detect(pedal_pin)
+        GPIO.remove_event_detect(pedal)
     except Exception:
         pass
     global count
     count = 0
-    counter_label.set('Pedal was pressed {} times'.format(count))
-    GPIO.add_event_detect(pedal_pin, GPIO.RISING, callback=add_count, bouncetime=200)
+    set_counter(count)
+    GPIO.add_event_detect(pedal, GPIO.RISING, callback=add_count, bouncetime=200)
     GPIO.output(red, False)
     GPIO.output(green, True)
 
 def stop_count():
     try:
-        GPIO.remove_event_detect(pedal_pin)
+        GPIO.remove_event_detect(pedal)
     except Exception:
         pass
     GPIO.output(red, True)
