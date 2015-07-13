@@ -1,13 +1,22 @@
 #!/usr/bin/env python
 
 import sys
+import pymysql.cursors
+import RPi.GPIO as GPIO
 
 if(sys.version_info[0]<3):
     from Tkinter import *
 else:
     from tkinter import *
 
-import RPi.GPIO as GPIO
+
+username    = 'root'
+password    = '123456'
+database    = 'pedal'
+this_station_id = 'station1'
+
+db = pymysql.connect (host='localhost', user=username, passwd=password, db=database, autocommit=True)
+cursor = db.cursor()
 
 pedal = 23
 red = 24
@@ -24,21 +33,28 @@ GPIO.output(green, False)
 
 root = Tk()
 
-
 counter_label = StringVar()
 counter = Label(root, textvariable=counter_label)
 counter.pack()
 
+
 def set_counter(count):
-    counter_label.set('Pedal was pressed {} times'.format(count))
+    if count == 1:
+        t = 'time'
+    else:
+        t = 'times'
+    counter_label.set('Pedal was pressed {} {}'.format(count, t))
 
 count = 0
 set_counter(count)
+
 
 def add_count(channel):
     global count
     count += 1
     set_counter(count)
+    sql = "INSERT INTO pedal_presses (station_id, timestamp) VALUES ('{}', NOW())".format(this_station_id)
+    cursor.execute(sql)
 
 def start_count():
     try:
@@ -51,6 +67,7 @@ def start_count():
     GPIO.add_event_detect(pedal, GPIO.RISING, callback=add_count, bouncetime=200)
     GPIO.output(red, False)
     GPIO.output(green, True)
+
 
 def stop_count():
     try:
