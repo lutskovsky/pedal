@@ -3,12 +3,18 @@
 import sys
 import pymysql.cursors
 import RPi.GPIO as GPIO
+import atexit
 
-if(sys.version_info[0]<3):
+if sys.version_info[0]<3:
     from Tkinter import *
 else:
     from tkinter import *
 
+@atexit.register
+def cleanup():
+    global cursor, db
+    GPIO.cleanup()
+    cursor.close()
 
 username    = 'root'
 password    = '123456'
@@ -23,10 +29,9 @@ red = 24
 green = 25
 
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(pedal,GPIO.IN)
-GPIO.setup(red,GPIO.OUT)
-GPIO.setup(green,GPIO.OUT)
-
+GPIO.setup(pedal, GPIO.IN)
+GPIO.setup(red, GPIO.OUT)
+GPIO.setup(green, GPIO.OUT)
 
 GPIO.output(red, True)
 GPIO.output(green, False)
