@@ -17,13 +17,13 @@ database    = 'pedal'
 this_station_id = 'station1'
 normally_open = True  # set to True if the switch is normally open, to False if normally closed
 
+pedal = 23
+red = 24
+green = 25
 
 db = pymysql.connect (host='localhost', user=username, passwd=password, db=database, autocommit=True)
 cursor = db.cursor()
 
-pedal = 23
-red = 24
-green = 25
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(pedal, GPIO.IN)
