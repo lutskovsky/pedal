@@ -15,7 +15,7 @@ username    = 'root'
 password    = '123456'
 database    = 'pedal'
 this_station_id = 'station1'
-normally_open = True  # set to True if the switch is normally open, to False otherwise
+normally_open = True  # set to True if the switch is normally open, to False if normally closed
 
 
 db = pymysql.connect (host='localhost', user=username, passwd=password, db=database, autocommit=True)
