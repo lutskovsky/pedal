@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import sys
 import pymysql.cursors
 import RPi.GPIO as GPIO
 import atexit
@@ -45,5 +44,5 @@ def add_count(channel):
 
 GPIO.add_event_detect(pedal, GPIO.RISING if normally_open else GPIO.FALLING, callback=add_count, bouncetime=200)
 
-
-
+while True:
+    pass
