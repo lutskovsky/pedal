@@ -44,7 +44,7 @@ def add_record(channel):
     sql = "INSERT INTO pedal_presses (station_id, timestamp) VALUES ('{}', NOW())".format(this_station_id)
     cursor.execute(sql)
 
-red_led()
+red_led(channel)
 
 GPIO.add_event_detect(pedal, GPIO.RISING if normally_open else GPIO.FALLING)
 GPIO.add_event_callback(pedal, callback=green_led)
