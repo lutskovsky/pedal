@@ -32,11 +32,11 @@ GPIO.setup(red, GPIO.OUT)
 GPIO.setup(green, GPIO.OUT)
 
 
-def red_led():
+def red_led(channel):
     GPIO.output(red, True)
     GPIO.output(green, False)
     
-def green_led():
+def green_led(channel):
     GPIO.output(red, False)
     GPIO.output(green, True)
 
