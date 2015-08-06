@@ -15,8 +15,9 @@ username    = 'root'
 password    = '123456'
 database    = 'pedal'
 this_station_id = 'station1'
-normally_open = True  # set to True if the switch is normally open, to False if normally closed
-bouncetime=1000
+normally_open = True  # Set to True if the switch is normally open, to False if normally closed.
+bouncetime = 1000 # Delay before accepting new input, in milliseconds.
+led_delay = 0.8 # Light the green light for this many seconds.
 
 pedal = 23
 red = 24
@@ -31,26 +32,19 @@ GPIO.setup(pedal, GPIO.IN)
 GPIO.setup(red, GPIO.OUT)
 GPIO.setup(green, GPIO.OUT)
 
-
-def red_led(channel):
-    GPIO.output(red, True)
-    GPIO.output(green, False)
-    
-def green_led(channel):
-    GPIO.output(red, False)
-    GPIO.output(green, True)
+GPIO.output(red, True)
+GPIO.output(green, False)
 
 def add_record(channel):
+    GPIO.output(red, False)
+    GPIO.output(green, True)
     sql = "INSERT INTO pedal_presses (station_id, timestamp) VALUES ('{}', NOW())".format(this_station_id)
     cursor.execute(sql)
+    time.sleep(led_delay)
+    GPIO.output(red, True)
+    GPIO.output(green, False)
 
-red_led(channel)
-
-GPIO.add_event_detect(pedal, GPIO.RISING if normally_open else GPIO.FALLING)
-GPIO.add_event_callback(pedal, callback=green_led)
-GPIO.add_event_callback(pedal, callback=add_record, bouncetime=bouncetime)
-
-GPIO.add_event_detect(pedal, GPIO.FALLING if normally_open else GPIO.RISING, callback=red_led)
+GPIO.add_event_detect(pedal, GPIO.RISING if normally_open else GPIO.FALLING, callback=add_count, bouncetime=bouncetime)
 
 while True:
     pass
