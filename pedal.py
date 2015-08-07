@@ -44,7 +44,7 @@ def add_record(channel):
     GPIO.output(red, True)
     GPIO.output(green, False)
 
-GPIO.add_event_detect(pedal, GPIO.RISING if normally_open else GPIO.FALLING, callback=add_count, bouncetime=bouncetime)
+GPIO.add_event_detect(pedal, GPIO.RISING if normally_open else GPIO.FALLING, callback=add_record, bouncetime=bouncetime)
 
 while True:
     pass
